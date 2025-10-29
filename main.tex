@@ -2,37 +2,29 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lineno}
+
 \linenumbers
 
-\title{Microephys: Extending the Brain Imaging Data Structure specification to animal microelectrode electrophysiology}
+\title{Microelectrode electrophysiology: Extending the Brain Imaging Data Structure to intracellular and extracellular recordings in animal models}
 
-\author[1,$\dag$]{Alice Author}
-\author[2,$\dag$]{Bob Author}
-\author[1,2]{Christine Author}
-\author[2,*]{Derek Author}
-\affil[1]{Affiliation, department, city, postcode, country}
-\affil[2]{Affiliation, department, city, postcode, country}
-
-\affil[*]{corresponding author(s): Derek Author (corresponding.author@email.example)}
-
-\affil[$\dag$]{these authors contributed equally to this work}
-
+% Following author list patterns from Pernet2019 (EEG-BIDS: 24 authors), Holdgraf2019 (iEEG-BIDS: 44 authors)
+\author[1,*]{First Author}
+% Add 20-40 authors representing diverse stakeholders as per successful extensions
 
 \begin{abstract}
-% This is a manuscript template for Data Descriptor submissions to \emph{Scientific Data} (\href{http://www.nature.com/scientificdata}{http://www.nature.com/scientificdata}). The abstract must be no longer than 170 words, and should succinctly describe the study, the assay(s) performed, the resulting data, and the reuse potential, but should not make any claims regarding new scientific findings. No references are allowed in this section. 
+% This is a manuscript template for Data Descriptor submissions to \emph{Scientific Data} (\href{http://www.nature.com/scientificdata}{http://www.nature.com/scientificdata}). The abstract must be no longer than 170 words, and should succinctly describe the study, the assay(s) performed, the resulting data, and the reuse potential, but should not make any claims regarding new scientific findings. No references are allowed in this section.
 
-% Taken from Christian's submission to INCF Assembly 2024 for intiating discussions
-Standards-compliance is a crucial aspect of open science, as it facilitates both collaboration and transparency.
-The Brain Imaging Data Structure (BIDS) is an increasingly widely used set of specifications, and is being actively expanded beyond its initial scope of brain imaging.
-Animal research methods have received increasing attention in BIDS, and among these, electrophysiological methods have been of considerable interest.
-Here we present the extension of BIDS to “microelectrode electrophysiology”, a term coined to denote electrophysiological recordings with microelectrodes, including intracellular, extracellular, and tissue-level electrophysiology.
-This BIDS extension proposal, BEP 032, deals with the challenges arising from the diverse range of technologies in electrophysiology and converges on signal and electrode channels as common metadata denominators, with the open standards NIX and NWB as allowed data formats.
-It provides a homogeneous standard for various microelectrode techniques, including patch clamp and multielectrode  array recordings.
-Moreover, it tackles integration with behavioural data and electrode localization specifications.
-The directory layout is consistent with BIDS, allowing intuitive data structure recognition at-a-glance even for non-experts.
-Our work provides not only access to cutting-edge standards for researchers in electrophysiology, but also a crucial extension to BIDS, providing a handling template for metadata aspects with relevance beyond electrophysiology.
-
+% Following Scientific Data format - 170 words max, no references
+% Pattern from Pernet2019, Niso2018, Holdgraf2019
+The Brain Imaging Data Structure (BIDS) has facilitated data sharing and tool development in human neuroimaging.
+We present an extension for microelectrode electrophysiology recordings in animal models, addressing the unique requirements of intracellular and extracellular recordings.
+This extension introduces two new data types: 'icephys' for intracellular and 'ecephys' for extracellular recordings, supporting diverse recording modalities from patch-clamp to high-density silicon probes.
+Building on existing BIDS principles and prior electrophysiology extensions, we specify metadata for probes, electrodes, and channels, with particular attention to metadata required for spike sorting analysis.
+The extension adopts NWB (Neurodata Without Borders) and NIX (Neuroscience Information Exchange) as data formats, ensuring comprehensive metadata capture while maintaining compatibility with existing analysis ecosystems.
+We provide example datasets covering common use cases and demonstrate integration with established tools including [Which tools?].
+This standardization enables reproducible analysis pipelines, facilitates data sharing through repositories like DANDI, G-Node and EBRAINS, and bridges scales from cellular to systems neuroscience.
 \end{abstract}
+
 \begin{document}
 
 \flushbottom
@@ -45,13 +37,45 @@ Our work provides not only access to cutting-edge standards for researchers in e
 
 \section*{Background \& Summary}
 
-% (700 words maximum) An overview of the study design, the assay(s) performed, and the created data, including any background information needed to put this study in the context of previous work and the literature. The section should also briefly outline the broader goals that motivated the creation of this dataset and the potential reuse value. We also encourage authors to include a figure that provides a schematic overview of the study and assay(s) design. The Background \& Summary should not include subheadings. This section and the other main body sections of the manuscript should include citations to the literature as needed. 
+% (700 words maximum) An overview of the study design, the assay(s) performed, and the created data, including any background information needed to put this study in the context of previous work and the literature. The section should also briefly outline the broader goals that motivated the creation of this dataset and the potential reuse value. We also encourage authors to include a figure that provides a schematic overview of the study and assay(s) design. The Background \& Summary should not include subheadings. This section and the other main body sections of the manuscript should include citations to the literature as needed.
 
-There have been significant developments in neuroimaging and electrophysiology techniques used in neuroscience over the last few years. Imaging techniques such as MRI, fMRI, or PET provide detailed brain activity maps across space. On the other hand, understanding neuronal dynamics requires high-resolution electrophysiological methods, including extracellular and intracellular recording.
+% 700 words max, following structure from Gorgolewski2016, Pernet2019, Holdgraf2019
 
-Efforts are being made to standardize these heterogeneous datasets generated by micro-electrode electrophysiology techniques, making both a need for this and the benefits more visible. These methods involve using language-agnostic common object data models (see Neo), and comprehensive data formats (see NWB, NIX, ABF, NDF, OpenEphys etc.) [add more]. While these strategies call attention to the significance of standardization, they also suggest that there is fragmentation within current efforts, which needs to be addressed through a unified and intuitive approach that encourages widespread adoption.
+% Paragraph 1: Field context and technological advances
+% Following Pernet2019 opening
+Microelectrode electrophysiology encompasses techniques for recording electrical activity from individual neurons to local field potentials, providing crucial insights into neural computation.
+Recent technological advances, including high-density silicon probes and standardized probe designs through the Neuropixels project, have dramatically increased data acquisition rates and experimental complexity.
+% Add statistics on data growth, number of labs using these techniques
 
-In this context, we propose an extension of the Brain Imaging Data Structure (BIDS) – a standard that has already gained wide acceptance – to incorporate “microelectrode electrophysiology, " including intracellular, extracellular, and tissue-level electrophysiology.
+% Paragraph 2: Current standardization landscape and fragmentation
+% Following pattern from Holdgraf2019, Niso2018
+While comprehensive data formats exist for neurophysiology (NWB; NIX),
+the field lacks standardized organization principles for datasets, metadata specifications, and directory structures.
+This fragmentation impedes data sharing, with surveys indicating [ADD SURVEY DATA] of researchers struggling to share or reuse electrophysiology data due to inconsistent formats and missing metadata.
+% Reference Neo, existing tools showing fragmentation
+
+% Paragraph 3: BIDS success and extension rationale
+% Following Gorgolewski2016, Poldrack2024
+BIDS has successfully standardized human neuroimaging data organization [cite],
+with over 850 datasets on OpenNeuro [cite] and adoption by major repositories.
+Prior BIDS extensions for human electrophysiology (EEG [cite], MEG [cite], iEEG [cite])
+established patterns for organizing time-series neural data, while the Microscopy extension [cite]
+introduced critical metadata fields for animal data.
+
+% Paragraph 4: Unique challenges for microelectrophysiology
+% New content specific to BEP032
+Microelectrode recordings present unique challenges:
+(1) electrode scales spanning orders of magnitude (sub-micron tips to millimeter arrays),
+(2) diverse probe geometries requiring specialized coordinate systems,
+(3) spike sorting as an essential preprocessing step requires specific metadata,
+
+% Paragraph 5: Extension overview and contributions
+Here we present BEP032, extending BIDS to microelectrode electrophysiology, with a focus on animal models.
+This extension: [summarize key contributions]
+% List main contributions following Holdgraf2019 pattern
+
+% Include Figure 1: Schematic overview (following Pernet2019 Fig 1, Bourget2022 Fig 1)
+% Show directory structure, data flow, and relationship to other modalities
 
 \section*{Methods}
 
@@ -70,58 +94,92 @@ In this context, we propose an extension of the Brain Imaging Data Structure (BI
 
 % \subsubsection*{Third-level section}
 
-\subsection*{Modality and Data Type Nomenclature}
-% This section tries to summarize discussions on the topic and justify the nomenclature we decided on
-% TODO: Do we add more arguments for some of the rejected options like 'Cellular'?
-% Refer discussions from here: https://github.com/bids-standard/bids-specification/issues/1800
-% Ontologies and terminologies: https://openminds-documentation.readthedocs.io/en/latest/instance_libraries/terminologies/technique.html#extracellularelectrophysiology
-% https://ontobee.org/ontology/OBI?iri=http://purl.obolibrary.org/obo/OBI_0000454
-% https://scicrunch.org/scicrunch/interlex/view/ilx_0739521
-The modality described in this extension and that characterizes the introduced datasets is termed 'Microelectrode Electrophysiology'. This choice balances specificity, clarity and alignment with the current BIDS standard and common community usage.
+\subsection*{Community Development Process}
+% Following detailed process documentation from Pernet2019 Section "BIDS-EEG: the process"
+% Timeline following ASL-BIDS pattern
 
-\subsubsection*{BIDS Terminology}
-% These definitions are copied over for now from BIDS spec
-\begin{itemize}
-    \item Modality: The category of brain data recorded by a file. For MRI data, different pulse sequences are considered distinct modalities, such as T1w, bold or dwi. For passive recording techniques, such as EEG, MEG or iEEG, the technique is sufficiently uniform to define the modalities eeg, meg and ieeg. When applicable, the modality is indicated in the suffix. The modality may overlap with, but should not be confused with the data type.
-    \item Data type: A functional group of different types of data. Data files are contained in a directory named for the data type. In raw datasets, the data type directory is nested inside subject and (optionally) session directories.
-    \item Suffix: An alphanumeric string that is part of a filename, located after all entities and following a final \texttt{\_}, right before the file extension. For example, it is \texttt{eeg} in \texttt{sub-05\_task-matchingpennies\_eeg.vhdr}.
-\end{itemize}
+The development of BEP032 began in [DATE] through the INCF Working Group on Standardized Data Structures.
+% Document meetings, consultations, public comment periods
+% Include stakeholder groups table as in Holdgraf2019
 
-\subsubsection*{Specificity and Distinction from Existing Modalities}
-Microelectrode electrophysiology establishes a clear distinction from other electrophysiological recording techniques already described by BIDS, such as EEG and iEEG, with the term 'micro' referring to the typical spatial scale of electrode contacts. Hence, the modality name differentiates these recordings from broader electrophysiological categories while maintaining clarity and agreement with the conventional community usage.
+\subsection*{Scope and Design Principles}
+% Following Niso2018 "Scope" section
 
-% https://github.com/bids-standard/bids-specification/issues/1800
-% https://docs.google.com/document/d/1GlHr3Go5sR2o_zmxyCU6Sq1W1LLAaV_XZcKpeG_iBFw/edit?tab=t.0
+\subsubsection*{Inclusion Criteria}
+% Define what's included: patch clamp, sharp electrode, extracellular, etc.
 
-\subsubsection*{Maintaining Modularity and Extensibility of BIDS}
-The proposed choice is a foresighted approach for maintaining the modularity and extensibility of BIDS. As new electrophysiological techniques are introduced in the future, a specific and descriptive naming convention would help prevent probable namespace conflicts, ensuring new modalities and data types can integrate seamlessly without breaking the current standard.
+\subsubsection*{Design Decisions}
+% Following MEG-BIDS choice to not require format conversion
+% Justify NIX/NWB requirement vs allowing native formats
 
 
-\subsubsection*{Separation of Data types and Suffixes}
-As for the datatype, we introduce "icephys" for intracellular electrophysiology and "ecephys" for extracellular electrophysiology. BIDS datatypes categorize functional groups of data and metadata files and subsequently serve as the directory name.
+\subsection*{Directory Structure and File Organization}
+% Following pattern from all electrophysiology papers
 
-\subsection*{Related BIDS Modalities}
+\subsubsection*{Data Type Specification}
+% Explain icephys vs ecephys separation
+% Reference Table showing directory structure
 
+\subsubsection*{Required and Optional Files}
+% Table following Pernet2019 Table 1, Holdgraf2019 Table 2
 
-\subsection*{Data Types: icephys and ecephys}
-\section*{Participant keyfile}
-\subsection*{Surgery Information}
-Note from 20250820 Meeting: Review compatibility with AIND (https://aind-data-schema.readthedocs.io/en/stable/acquisition.html) schema
-\subsection*{Age and Birthdate}
-\section*{Probes, Electrodes, and Channels}
-\subsection*{Electrode Locations}
-\subsubsection*{Coordinate system}
-\subsubsection*{Electrode Placement Image}
-\subsection*{Channel type enum additions}
-\section*{Multipart recordings}
-\subsection*{scans.tsv}
-\subsection*{events.tsv}
-\section*{Data Formats for recorded data}
-\subsection*{NWB}
-\subsection*{NIX}
-\section*{Example Datasets}
-\section*{Community Software and Adoption}
- 
+\subsection*{Metadata Specifications}
+
+\subsubsection*{Inheritance Principle}
+% Following Gorgolewski2016 explanation
+
+\subsubsection*{Required Metadata Fields}
+% Table with field, description, and justification
+% Pattern from Pernet2019 Table 3, Niso2018 Table 3
+
+\subsubsection*{Animal-Specific Metadata}
+% Building on Bourget2022
+% Species, strain, age handling
+
+\subsection*{Probe, Electrode, and Channel Specifications}
+% Core technical content following iEEG-BIDS electrode handling
+
+\subsubsection*{_probes.tsv Specification}
+% New for microelectrophysiology
+% Table with required/optional columns
+
+\subsubsection*{_electrodes.tsv Specification}
+% Adapt from Holdgraf2019
+% Handle 3D coordinates, impedance
+
+\subsubsection*{_channels.tsv Specification}
+% Extend Pernet2019 channel types
+% Add LFP, MUA, SUA types
+
+\subsection*{Coordinate Systems}
+% Following Holdgraf2019 Section 2.4
+
+\subsubsection*{Stereotaxic Coordinates}
+% Bregma/lambda reference for rodents
+
+\subsubsection*{Atlas-Based Coordinates}
+% Allen CCF, Paxinos references
+
+\subsubsection*{Probe-Relative Coordinates}
+
+\subsection*{Spike Sorting and Derivatives}
+% New section critical for microelectrophysiology
+
+\subsubsection*{Spike Sorting Outputs}
+% Unit classifications, quality metrics
+
+\subsubsection*{Provenance Tracking}
+% Following BIDS derivatives principles
+
+\subsection*{Integration with Existing Tools}
+% Following Pernet2019 Section 4
+
+\subsubsection*{Conversion Tools}
+% SpikeInterface, Neo integration
+
+\subsubsection*{Analysis Pipelines}
+% Compatibility demonstration
+
 % Topical subheadings are allowed.
 
 \section*{Data Records}
@@ -130,46 +188,114 @@ Note from 20250820 Meeting: Review compatibility with AIND (https://aind-data-sc
 
 % Tables should be used to support the data records, and should clearly indicate the samples and subjects (study inputs), their provenance, and the experimental manipulations performed on each (please see 'Tables' below). They should also specify the data output resulting from each data-collection or analytical step, should these form part of the archived record.
 
+% Following Bourget2022, Holdgraf2019 pattern
+
+Example datasets demonstrating the specification are available at [REPOSITORY].
+Table~\ref{tab:datasets} summarizes the datasets, recording techniques, and use cases.
+
+% Table: Example datasets
+% Columns: Dataset name, Species, Recording type, Probe type, Duration, Size, DOI
+
+\subsection*{Dataset 1: Acute Silicon Probe Recording}
+% Brief description, link to repository
+
+\subsection*{Dataset 2: Chronic Tetrode Recording}
+% Brief description, link to repository
+
+\subsection*{Dataset 3: Patch Clamp with Optogenetics}
+% Brief description, link to repository
+
+\subsection*{Dataset 4: Neuropixels Multi-Region Recording}
+% Brief description, link to repository
+
 \section*{Technical Validation}
 
 % This section presents any experiments or analyses that are needed to support the technical quality of the dataset. This section may be supported by figures and tables, as needed. This is a required section; authors must present information justifying the reliability of their data.
+
+% Following Pernet2019, Niso2018 validation approaches
+
+\subsection*{Validator Compliance}
+% BIDS validator extension testing
+
+\subsection*{Round-Trip Conversion}
+% Demonstrate data integrity through conversion
+
+\subsection*{Cross-Tool Compatibility}
+% Test with multiple analysis pipelines
+
+\subsection*{Performance Benchmarks}
+% Address scalability for large datasets
 
 \section*{Usage Notes}
 
 % The Usage Notes should contain brief instructions to assist other researchers with reuse of the data. This may include discussion of software packages that are suitable for analysing the assay data files, suggested downstream processing steps (e.g. normalization, etc.), or tips for integrating or comparing the data records with other datasets. Authors are encouraged to provide code, programs or data-processing workflows if they may help others understand or use the data. Please see our code availability policy for advice on supplying custom code alongside Data Descriptor manuscripts.
 
-% For studies involving privacy or safety controls on public access to the data, this section should describe in detail these controls, including how authors can apply to access the data, what criteria will be used to determine who may access the data, and any limitations on data use. 
+% For studies involving privacy or safety controls on public access to the data, this section should describe in detail these controls, including how authors can apply to access the data, what criteria will be used to determine who may access the data, and any limitations on data use.
+
+% Following all papers' patterns
+
+\subsection*{Converting Existing Data}
+% Step-by-step guide
+
+\subsection*{Recommended Workflows}
+% Best practices for organization
+
+\subsection*{Integration with Other Modalities}
+% Combining with imaging, behavior
+
+\subsection*{Repository Submission}
+% DANDI, GIN guidance
 
 \section*{Code availability}
 
-% For all studies using custom code in the generation or processing of datasets, a statement must be included under the heading "Code availability", indicating whether and how the code can be accessed, including any restrictions to access. This section should also include information on the versions of any software used, if relevant, and any specific variables or parameters used to generate, test, or process the current dataset. 
+% For all studies using custom code in the generation or processing of datasets, a statement must be included under the heading "Code availability", indicating whether and how the code can be accessed, including any restrictions to access. This section should also include information on the versions of any software used, if relevant, and any specific variables or parameters used to generate, test, or process the current dataset.
 
-\bibliography{sample}
+% Following standard format
+
+BEP032tools [VERSION] provides validation and conversion utilities: [GITHUB LINK]
+Example conversion scripts are available at: [GITHUB LINK]
+The specification is maintained at: https://github.com/bids-standard/bids-specification
+
+\bibliography{bep032}
 
 % \noindent LaTeX formats citations and references automatically using the bibliography records in your .bib file, which you can edit via the project menu. Use the cite command for an inline citation, e.g. \cite{Kaufman2020, Figueredo:2009dg, Babichev2002, behringer2014manipulating}. For data citations of datasets uploaded to e.g. \emph{figshare}, please use the \verb|howpublished| option in the bib entry to specify the platform and the link, as in the \verb|Hao:gidmaps:2014| example in the sample bibliography file. For journal articles, DOIs should be included for works in press that do not yet have volume or page numbers. For other journal articles, DOIs should be included uniformly for all articles or not at all. We recommend that you encode all DOIs in your bibtex database as full URLs, e.g. https://doi.org/10.1007/s12110-009-9068-2.
 
-\section*{Acknowledgements} (not compulsory)
+\section*{Acknowledgements}
+% Acknowledge working group, funders, community contributors
 
 % Acknowledgements should be brief, and should not include thanks to anonymous referees and editors, or effusive comments. Grant or contribution numbers may be acknowledged.
 
-\section*{Author contributions statement}
+\section*{Author Contributions}
+% Following Holdgraf2019 detailed contributions
 
 % Must include all authors, identified by initials, for example:
-% A.A. conceived the experiment(s), A.A. and B.A. conducted the experiment(s), C.A. and D.A. analysed the results. All authors reviewed the manuscript. 
+% A.A. conceived the experiment(s), A.A. and B.A. conducted the experiment(s), C.A. and D.A. analysed the results. All authors reviewed the manuscript.
 
-\section*{Competing interests} (mandatory statement)
+\section*{Competing Interests}
+The authors declare no competing interests.
 
 % The corresponding author is responsible for providing a \href{https://www.nature.com/sdata/policies/editorial-and-publishing-policies#competing}{competing interests statement} on behalf of all authors of the paper. This statement must be included in the submitted article file.
 
 \section*{Figures \& Tables}
 
-% Figures, tables, and their legends, should be included at the end of the document. Figures and tables can be referenced in \LaTeX{} using the ref command, e.g. Figure \ref{fig:stream} and Table \ref{tab:example}. 
+% Figures, tables, and their legends, should be included at the end of the document. Figures and tables can be referenced in \LaTeX{} using the ref command, e.g. Figure \ref{fig:stream} and Table \ref{tab:example}.
 
-% Authors are encouraged to provide one or more tables that provide basic information on the main ‘inputs’ to the study (e.g. samples, participants, or information sources) and the main data outputs of the study. Tables in the manuscript should generally not be used to present primary data (i.e. measurements). Tables containing primary data should be submitted to an appropriate data repository.
+% Authors are encouraged to provide one or more tables that provide basic information on the main 'inputs' to the study (e.g. samples, participants, or information sources) and the main data outputs of the study. Tables in the manuscript should generally not be used to present primary data (i.e. measurements). Tables containing primary data should be submitted to an appropriate data repository.
 
-% Tables may be provided within the \LaTeX{} document or as separate files (tab-delimited text or Excel files). Legends, where needed, should be included here. Generally, a Data Descriptor should have fewer than ten Tables, but more may be allowed when needed. Tables may be of any size, but only Tables which fit onto a single printed page will be included in the PDF version of the article (up to a maximum of three). 
+% Tables may be provided within the \LaTeX{} document or as separate files (tab-delimited text or Excel files). Legends, where needed, should be included here. Generally, a Data Descriptor should have fewer than ten Tables, but more may be allowed when needed. Tables may be of any size, but only Tables which fit onto a single printed page will be included in the PDF version of the article (up to a maximum of three).
 
-% Due to typesetting constraints, tables that do not fit onto a single A4 page cannot be included in the PDF version of the article and will be made available in the online version only. Any such tables must be labelled in the text as ‘Online-only’ tables and numbered separately from the main table list e.g. ‘Table 1, Table 2, Online-only Table 1’ etc.
+% Due to typesetting constraints, tables that do not fit onto a single A4 page cannot be included in the PDF version of the article and will be made available in the online version only. Any such tables must be labelled in the text as 'Online-only' tables and numbered separately from the main table list e.g. 'Table 1, Table 2, Online-only Table 1' etc.
+
+\begin{figure}[ht]
+\centering
+% Figure 1: Overview schematic
+\caption{Overview of the BIDS microelectrode electrophysiology extension.
+(a) Directory structure showing icephys and ecephys datatypes.
+(b) Metadata inheritance hierarchy.
+(c) Relationship between probes, electrodes, and channels.
+(d) Integration with analysis tools and repositories.}
+\label{fig:overview}
+\end{figure}
 
 % \begin{figure}[ht]
 % \centering
@@ -177,6 +303,35 @@ Note from 20250820 Meeting: Review compatibility with AIND (https://aind-data-sc
 % \caption{Legend (350 words max). Example legend text.}
 % \label{fig:stream}
 % \end{figure}
+
+\begin{table}[ht]
+\centering
+\caption{Required and optional files for microelectrode electrophysiology recordings}
+% Following Pernet2019 Table 1 format
+\label{tab:files}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Required metadata fields and their descriptions}
+% Following Niso2018 Table 3 format
+\label{tab:metadata}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Channel types for microelectrode recordings}
+% Extending Pernet2019 Table 2
+\label{tab:channels}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Example datasets demonstrating the specification}
+\label{tab:datasets}
+\end{table}
+
+% Online-only tables if needed for comprehensive metadata listings
 
 % \begin{table}[ht]
 % \centering

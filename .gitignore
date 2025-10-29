@@ -1,0 +1,43 @@
+# LaTeX files
+*.aux
+*.log
+*.toc
+*.out
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.bbl
+*.blg
+*.lof
+*.lot
+*.bcf
+*.run.xml
+*.xdv
+*.nav
+*.snm
+*.vrb
+*.dvi
+*.ps
+*.pdf_tex
+
+# LaTeX temporary files
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.loa
+*.lol
+*.nlo
+*.nls
+*.tdo
+
+# Build directories
+*.latexmain
+_minted-*/
+auto/
