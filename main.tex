@@ -111,7 +111,9 @@ The development of BEP032 began in [DATE] through the INCF Working Group on Stan
 \subsubsection*{Design Decisions}
 % Following MEG-BIDS choice to not require format conversion
 % Justify NIX/NWB requirement vs allowing native formats
+% Discuss division between icephys and ecephys
 
+The division between intracellular (icephys) and extracellular (ecephys) electrophysiology is based on the recording techniques and the resulting data characteristics. Icephys typically involves high-resolution recordings from individual neurons, requiring detailed metadata about the cell type, location, and experimental conditions. In contrast, ecephys captures broader population activity, necessitating metadata that describes the electrode array configuration, spatial sampling, and signal processing methods.
 
 \subsection*{Directory Structure and File Organization}
 % Following pattern from all electrophysiology papers
@@ -139,17 +141,17 @@ The development of BEP032 began in [DATE] through the INCF Working Group on Stan
 \subsection*{Probe, Electrode, and Channel Specifications}
 % Core technical content following iEEG-BIDS electrode handling
 
-\subsubsection*{_probes.tsv Specification}
+\subsubsection*{Probes TSV Specification}
 % New for microelectrophysiology
 % Table with required/optional columns
 
-\subsubsection*{_electrodes.tsv Specification}
+\subsubsection*{Electrodes TSV Specification}
 % Adapt from Holdgraf2019
 % Handle 3D coordinates, impedance
 
-\subsubsection*{_channels.tsv Specification}
+\subsubsection*{Channels TSV Specification}
 % Extend Pernet2019 channel types
-% Add LFP, MUA, SUA types
+% Added channel types for microelectrophysiology
 
 \subsection*{Coordinate Systems}
 % Following Holdgraf2019 Section 2.4
@@ -164,18 +166,14 @@ The development of BEP032 began in [DATE] through the INCF Working Group on Stan
 
 \subsection*{Spike Sorting and Derivatives}
 % New section critical for microelectrophysiology
-
-\subsubsection*{Spike Sorting Outputs}
-% Unit classifications, quality metrics
-
-\subsubsection*{Provenance Tracking}
-% Following BIDS derivatives principles
+% Justifying sufficient metadata for spike sorting
 
 \subsection*{Integration with Existing Tools}
 % Following Pernet2019 Section 4
+% nuroconv - to NWB/NIX
 
 \subsubsection*{Conversion Tools}
-% SpikeInterface, Neo integration
+% nwb2bids
 
 \subsubsection*{Analysis Pipelines}
 % Compatibility demonstration
@@ -196,13 +194,13 @@ Table~\ref{tab:datasets} summarizes the datasets, recording techniques, and use 
 % Table: Example datasets
 % Columns: Dataset name, Species, Recording type, Probe type, Duration, Size, DOI
 
-\subsection*{Dataset 1: Acute Silicon Probe Recording}
+\subsection*{Dataset 1: One icephys dataset}
 % Brief description, link to repository
 
-\subsection*{Dataset 2: Chronic Tetrode Recording}
+\subsection*{Dataset 2: One chronic ecephys dataset}
 % Brief description, link to repository
 
-\subsection*{Dataset 3: Patch Clamp with Optogenetics}
+\subsection*{Dataset 3: One acute ecephys experiment}
 % Brief description, link to repository
 
 \subsection*{Dataset 4: Neuropixels Multi-Region Recording}
@@ -223,8 +221,9 @@ Table~\ref{tab:datasets} summarizes the datasets, recording techniques, and use 
 \subsection*{Cross-Tool Compatibility}
 % Test with multiple analysis pipelines
 
-\subsection*{Performance Benchmarks}
+\subsection*{File Size and Performance}
 % Address scalability for large datasets
+
 
 \section*{Usage Notes}
 
@@ -236,6 +235,7 @@ Table~\ref{tab:datasets} summarizes the datasets, recording techniques, and use 
 
 \subsection*{Converting Existing Data}
 % Step-by-step guide
+% neuroconv, MNE-BIDS create structure?? any other tool?
 
 \subsection*{Recommended Workflows}
 % Best practices for organization
